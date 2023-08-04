@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "321424344574",
+    "project_id": "invoice-7fd76",
+    "storage_bucket": "invoice-7fd76.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:321424344574:android:d97aeab899241fa0f16caf",
+        "android_client_info": {
+          "package_name": "com.eamar.invoice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "321424344574-o1mn2t3nl6r6ho51fjmjsj38cte2ssgh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWlLYCTW8JJjd3mPjMTBm_PVnI0-Wi1PM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "321424344574-o1mn2t3nl6r6ho51fjmjsj38cte2ssgh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
