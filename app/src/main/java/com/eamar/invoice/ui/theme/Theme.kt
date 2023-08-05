@@ -5,6 +5,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import com.eamar.invoice.src.utils.Constants.mainColor
+import com.eamar.invoice.src.utils.Constants.secondaryColor
+import com.eamar.invoice.src.utils.Constants.thirdColor
 
 private val DarkColorPalette = darkColors(
     primary = Purple200,
@@ -13,9 +16,9 @@ private val DarkColorPalette = darkColors(
 )
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = mainColor,
+    primaryVariant = thirdColor,
+    secondary = secondaryColor
 
     /* Other default colors to override
     background = Color.White,

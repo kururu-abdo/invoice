@@ -1,11 +1,15 @@
 package com.eamar.invoice.src.features.auth.data.repository
 
+import com.eamar.invoice.R
 import com.eamar.invoice.src.core.Response
 import com.eamar.invoice.src.features.auth.data.model.User
 import com.eamar.invoice.src.features.auth.domain.repository.RemoteUserRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.auth.ktx.userProfileChangeRequest
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -16,46 +20,155 @@ import javax.inject.Singleton
 class RemoteUserRepositoryImpl @Inject constructor(
     private val firebaseAuth:  FirebaseAuth
 ) : RemoteUserRepository{
-    override suspend fun signUser(user: User): Flow<User> {
-//        try {
-//            var result =
-//                firebaseAuth.createUserWithEmailAndPassword(user.email, user.password).await()
-//
-//            if (result.user != null) {
-//                firebaseAuth.currentUser!!
-//                    .updateProfile(
-//                        UserProfileChangeRequest
-//
-//                    )
-//
-//
-////          Response.Success<User>(
-////              U
-////          )
-//            } else {
-//
-//            }
-//
-//
-//        } catch (e: Exception) {
-//            Response.Failure(e)
-//        }
-        TODO("Not yet implemented")
+    override  fun signUser(user: User)  =
+        flow {
+            try {
+                var result =
+                    firebaseAuth.createUserWithEmailAndPassword(user.email, user.password).await()
+
+                if (result.user != null) {
+                    firebaseAuth.currentUser!!
+                        .updateProfile(
+
+                            userProfileChangeRequest {
+                                setDisplayName(user.userName)
+
+                            }
+
+                        )
+
+                    var currentUser = firebaseAuth.currentUser!!
+
+
+                   emit(
+                       Response.Success<User>(
+                           User(
+                               id = currentUser!!.uid,
+                               userName = currentUser.displayName!!,
+                               email = currentUser.email!!,
+                               userIcon = R.drawable.ic_user,
+                               password = ""
+                           )
+                       )
+                   )
+                } else {
+                    emit(
+                        Response.Failure(
+                            java.lang.Exception(
+                                "No User"
+                            )
+                        )
+                    )
+                }
+
+
+            } catch (e: Exception) {
+
+
+                emit(
+                    Response.Failure(e)
+                )
+            }
+        }
+
+
+
+
+    override  fun loginUser(email: String, password: String)
+   =
+flow {
+    try {
+        var result = firebaseAuth.signInWithEmailAndPassword(
+            email, password
+        ).await()
+        if (result.user != null) {
+            var currentUser = firebaseAuth.currentUser!!
+
+            emit(
+                Response.Success<User>(
+                    User(
+                        id = currentUser!!.uid,
+                        userName = currentUser.displayName!!,
+                        email = currentUser.email!!,
+                        userIcon = R.drawable.ic_user,
+                        password = ""
+                    )
+                )
+            )
+
+        } else {
+           emit(
+               Response.Failure(
+                   java.lang.Exception(
+                       "No User"
+                   )
+               )
+           )
+        }
+    } catch (e: Exception) {
+      emit(
+          Response.Failure(e)
+      )
+    }
+}
+
+
+
+     override   fun fetchUserProfile(id: String): Flow<User> = callbackFlow {
+       try {
+           var currentUser = firebaseAuth.currentUser!!
+
+           if (currentUser!=null){
+
+               Response.Success<User>(
+                   User(
+                       id = currentUser!!.uid,
+                       userName = currentUser.displayName!!,
+                       email = currentUser.email!!,
+                       userIcon = R.drawable.ic_user,
+                       password = ""
+                   )
+               )
+           }else {
+               Response.Failure(
+                   java.lang.Exception(
+                       "No User"
+                   )
+               )
+           }
+
+       }catch (e:Exception){
+
+           Response.Failure(e)
+
+       }
     }
 
-    override suspend fun loginUser(phone: String, password: String) {
-        TODO("Not yet implemented")
+    override suspend fun updateUser(user: User) =
+       try {
+           firebaseAuth.currentUser!!
+               .updateProfile(
+
+                   userProfileChangeRequest {
+                       setDisplayName(user.userName)
+
+                   }
+
+               )
+           Response.Success(true)
+       }catch (e:Exception){
+           Response.Failure(e)
+       }
+
+
+    override suspend fun deleteUser(id: String) =try{
+       firebaseAuth.currentUser!!.delete()
+        Response.Success(true)
+    }catch (e:Exception){
+        Response.Failure(e)
     }
 
-    override  fun fetchUserProfile(id: String): Flow<User> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun updateUser(user: User) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun deleteUser(id: String) {
-        TODO("Not yet implemented")
+    override suspend fun logout() {
+       firebaseAuth.signOut()
     }
 }
