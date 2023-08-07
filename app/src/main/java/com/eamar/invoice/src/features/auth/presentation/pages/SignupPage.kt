@@ -19,8 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.eamar.invoice.src.features.auth.presentation.AuthViewModel
-import com.eamar.invoice.src.features.auth.presentation.components.AuthButton
-import com.eamar.invoice.src.features.auth.presentation.components.AuthTextField
+import com.eamar.invoice.src.features.auth.presentation.components.*
 import com.eamar.invoice.src.utils.Constants.mainColor
 import com.eamar.invoice.src.utils.Constants.thirdColor
 
@@ -64,18 +63,19 @@ fun SignupPage (
             Column(
                 modifier = Modifier
                     .height(
-                        150.dp
+                        140.dp
                     ),
 
-                Arrangement.SpaceBetween
+                Arrangement.SpaceBetween ,
+                Alignment.CenterHorizontally
             ){
                 Image(painter =
 
-                painterResource(id = com.eamar.invoice.R.drawable.ic_user)
+                painterResource(id = com.eamar.invoice.R.drawable.bill)
                     , contentDescription ="" ,
 
                     modifier = Modifier.height(
-                        120.dp
+                        115.dp
                     )
                 )
 
@@ -83,8 +83,8 @@ fun SignupPage (
                 Text(text = "Invoice App " ,
 
                     style = TextStyle(
-                        fontSize = 20.sp ,
-                        color = mainColor
+                        fontSize = 18.sp ,
+                        color = Color.Black
                     )
                 )
 
@@ -92,7 +92,7 @@ fun SignupPage (
             }
 
             Spacer(modifier =Modifier.height(
-                20.dp
+                15.dp
             ))
             Box(
 
@@ -125,7 +125,7 @@ fun SignupPage (
                 ) {
 
 
-                    Text(text = "Login" ,
+                    Text(text = "SignUp" ,
                         color = mainColor
 
                     )
@@ -137,8 +137,25 @@ fun SignupPage (
 
                     )
 
-                    AuthTextField(value = "", onValueChange ={
+                    AuthTextField(value = authViewModel.userName.value,
+                        onValueChange ={
+                        authViewModel.userName.value=it
+                        authViewModel.validateUserName()
+                    } , placeholder ="User Name" ,
 
+                        authViewModel = authViewModel ,
+                        errMsg = authViewModel.userNameErrMsg.value
+                    )
+                    Spacer(modifier =
+
+                    Modifier.height(
+                        5.dp
+                    )
+
+                    )
+                    EmailField(value = authViewModel.email.value, onValueChange ={
+authViewModel.email.value =it
+                        authViewModel.validateEmail()
                     } , placeholder ="Email" ,
 
                         authViewModel = authViewModel
@@ -150,24 +167,62 @@ fun SignupPage (
                     )
 
                     )
-                    AuthTextField(value = "", onValueChange ={
-
-                    } , placeholder ="Email" , authViewModel = authViewModel
+                    PasswordField(value = authViewModel.password.value,
+                        onValueChange ={
+authViewModel.password.value =it
+                            authViewModel.validatePassword()
+                    } , placeholder ="Password" , authViewModel = authViewModel
                     )
-
-
 
                     Spacer(modifier =
 
                     Modifier.height(
-                        10.dp
+                        5.dp
                     )
 
                     )
+                    ConfirmPasswordField(value = authViewModel.confirmPassword.value,
+                        onValueChange ={
+                            authViewModel.confirmPassword.value=it
+authViewModel.validateConfirmPassword()
 
-                    AuthButton(text = "Login") {
+                    } , placeholder ="Confirm Password" ,
+                        authViewModel = authViewModel
+                    )
 
-                    }
+                    Spacer(modifier =
+
+                    Modifier.height(
+                        20.dp
+                    )
+
+                    )
+                    Text(
+                        modifier = Modifier.padding(start = 8.dp),
+                        text =  authViewModel.errMsg.value
+                        ,
+                        fontSize = 8.sp,
+                        color = Color.Red
+                    )
+                    AuthButton(
+                        text = "SignUp" ,
+isEnabled = authViewModel.isEnabledRegisterButton.value,
+                        onClick = {
+//                            if (authViewModel.isEnabledRegisterButton.value){
+                                authViewModel.signUser()
+//                            }else {
+//
+//                            }
+                        } ,
+
+
+authViewModel = authViewModel ,
+                        isLoading = authViewModel.authState.value.isLoading
+                        )
+
+
+
+
                     Spacer(modifier =
 
                     Modifier.height(

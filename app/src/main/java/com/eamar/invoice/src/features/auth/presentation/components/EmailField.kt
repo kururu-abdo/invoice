@@ -1,13 +1,11 @@
 package com.eamar.invoice.src.features.auth.presentation.components
 
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
@@ -30,6 +28,9 @@ fun EmailField(
 //        onValueChange = { textFieldValue -> onValueChange(textFieldValue) },
 //        placeholder = { Text(placeholder, color = MaterialTheme.colors.secondary) }
 //    )
+Column(
+    horizontalAlignment = Alignment.Start
+) {
     TextField(
         modifier = Modifier
 //               . defaultMinSize(minHeight = 40.dp)
@@ -69,11 +70,11 @@ fun EmailField(
 
     Text(
         modifier = Modifier.padding(start = 8.dp),
-        text =  if (!isPassword)  authViewModel.emailErrMsg.value else
-            authViewModel.emailErrMsg.value
+        text =  authViewModel.emailErrMsg.value
         ,
-        fontSize = 14.sp,
+        fontSize = 8.sp,
         color = Color.Red
     )
+}
 
 }

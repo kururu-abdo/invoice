@@ -6,4 +6,5 @@ data class AuthUseCases (
     val signUser : SignUserUseCase ,
     val logoutUser : SignOutUseCase ,
     val updateUser : UpdateUserDataUseCase ,
+    val isLggedInUseCase: CheckIfLoggedInUseCase  ,
         )

@@ -1,6 +1,7 @@
 package com.eamar.invoice.src.di
 
 import com.eamar.invoice.src.features.auth.data.repository.RemoteUserRepositoryImpl
+import com.eamar.invoice.src.features.auth.domain.repository.IsLoggedInResponse
 import com.eamar.invoice.src.features.auth.domain.repository.RemoteUserRepository
 import com.eamar.invoice.src.features.auth.domain.usecase.*
 import com.eamar.invoice.src.utils.Constants
@@ -37,6 +38,7 @@ object AppModule {
         signUser = SignUserUseCase(repo),
         deleteUser = DeleteUserUseCase(repo) ,
         updateUser = UpdateUserDataUseCase(repo) ,
-        logoutUser = SignOutUseCase(repo)
+        logoutUser = SignOutUseCase(repo) ,
+        isLggedInUseCase = CheckIfLoggedInUseCase(repo)
     )
 }

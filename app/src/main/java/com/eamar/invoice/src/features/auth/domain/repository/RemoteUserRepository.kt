@@ -8,6 +8,7 @@ typealias UpdateUserRespone = Response<Boolean>
 typealias SignUserRespone = Response<User>
 typealias LoginUserRespone = Response<User>
 typealias DeleteUserRespone = Response<Boolean>
+typealias IsLoggedInResponse = Response<Boolean>
 interface    RemoteUserRepository {
 
 
@@ -18,6 +19,6 @@ interface    RemoteUserRepository {
     suspend  fun updateUser(user: User):UpdateUserRespone
     suspend fun deleteUser(id:String):DeleteUserRespone
     suspend fun logout()
-
+    suspend fun isloggedIn():Flow<IsLoggedInResponse>
 
 }

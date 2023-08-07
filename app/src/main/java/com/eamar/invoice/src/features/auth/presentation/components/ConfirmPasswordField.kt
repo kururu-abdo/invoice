@@ -1,5 +1,6 @@
 package com.eamar.invoice.src.features.auth.presentation.components
 
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -20,7 +21,7 @@ import com.eamar.invoice.R
 import com.eamar.invoice.src.features.auth.presentation.AuthViewModel
 
 @Composable
-fun PasswordField(
+fun ConfirmPasswordField(
 
     value: String,onValueChange: (String) -> Unit ,
     placeholder: String ,
@@ -69,17 +70,17 @@ fun PasswordField(
             ) },
             shape = RoundedCornerShape(8.dp),
             singleLine = true,
-            visualTransformation = if (authViewModel.passwordVisibilty.value) VisualTransformation.None else PasswordVisualTransformation(),
+            visualTransformation = if (authViewModel.confirmPasswordVisibilty.value) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 IconButton(onClick = {
-                    authViewModel.passwordVisibilty.value = !authViewModel.passwordVisibilty.value
+                    authViewModel.confirmPasswordVisibilty.value = !authViewModel.confirmPasswordVisibilty.value
                 }) {
                     Icon(
-                      if(  authViewModel.passwordVisibilty.value)
-                       painterResource(id = R.drawable.ic_visibilty)
-                    else
-                          painterResource(id = R.drawable.ic_visibilty_off)
-                    ,
+                        if(  authViewModel.confirmPasswordVisibilty.value)
+                            painterResource(id = R.drawable.ic_visibilty)
+                        else
+                            painterResource(id = R.drawable.ic_visibilty_off)
+                        ,
                         contentDescription = ""
                     )
                 }
@@ -90,7 +91,7 @@ fun PasswordField(
 
         Text(
             modifier = Modifier.padding(start = 8.dp),
-            text =  authViewModel.passwordErrMsg.value
+            text =  authViewModel.confPasswordErrMsg.value
             ,
             fontSize = 8.sp,
             color = Color.Red

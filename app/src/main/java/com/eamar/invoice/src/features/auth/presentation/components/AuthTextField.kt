@@ -1,13 +1,11 @@
 package com.eamar.invoice.src.features.auth.presentation.components
 
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
@@ -22,7 +20,7 @@ fun AuthTextField(
     value: String,onValueChange: (String) -> Unit ,
     placeholder: String ,
 
-    isPassword:Boolean = false ,
+    errMsg:String="",
     authViewModel: AuthViewModel
     ){
 //    TextField(
@@ -30,50 +28,54 @@ fun AuthTextField(
 //        onValueChange = { textFieldValue -> onValueChange(textFieldValue) },
 //        placeholder = { Text(placeholder, color = MaterialTheme.colors.secondary) }
 //    )
-    TextField(
-        modifier = Modifier
+ Column(
+     horizontalAlignment = Alignment.Start
+ ) {
+
+     TextField(
+         modifier = Modifier
 //               . defaultMinSize(minHeight = 40.dp)
-            .height(42.dp)
+             .height(42.dp)
 
-            .fillMaxWidth(),
-        value = value,
-        colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = Color(0xFFf4f4f4),
-            cursorColor = Color.Black,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent
-        ),
+             .fillMaxWidth(),
+         value = value,
+         colors = TextFieldDefaults.textFieldColors(
+             backgroundColor = Color(0xFFf4f4f4),
+             cursorColor = Color.Black,
+             focusedIndicatorColor = Color.Transparent,
+             unfocusedIndicatorColor = Color.Transparent
+         ),
 
-        onValueChange =  { textFieldValue -> onValueChange(textFieldValue) },
+         onValueChange =  { textFieldValue -> onValueChange(textFieldValue) },
 
-        textStyle = LocalTextStyle.current.copy(
-            color = MaterialTheme.colors.onSurface,
-            fontSize = 8.sp
-        ),
-        placeholder = { Text(placeholder,
-
-
-
-         style = TextStyle(
-                fontSize=8.sp ,
-                color = Color(0xFFbcbcbc)
-        )
-
-        ) },
-        shape = RoundedCornerShape(8.dp),
-        singleLine = true,
+         textStyle = LocalTextStyle.current.copy(
+             color = MaterialTheme.colors.onSurface,
+             fontSize = 8.sp
+         ),
+         placeholder = { Text(placeholder,
 
 
 
-        )
+             style = TextStyle(
+                 fontSize=8.sp ,
+                 color = Color(0xFFbcbcbc)
+             )
 
-    Text(
-        modifier = Modifier.padding(start = 8.dp),
-        text =  if (!isPassword)  authViewModel.emailErrMsg.value else
-        authViewModel.emailErrMsg.value
-    ,
-        fontSize = 14.sp,
-        color = Color.Red
-    )
+         ) },
+         shape = RoundedCornerShape(8.dp),
+         singleLine = true,
+
+
+
+         )
+
+     Text(
+         modifier = Modifier.padding(start = 8.dp),
+         text =  errMsg
+         ,
+         fontSize = 8.sp,
+         color = Color.Red
+     )
+ }
 
 }

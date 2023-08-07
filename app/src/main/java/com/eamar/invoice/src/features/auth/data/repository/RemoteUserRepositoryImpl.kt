@@ -3,8 +3,10 @@ package com.eamar.invoice.src.features.auth.data.repository
 import com.eamar.invoice.R
 import com.eamar.invoice.src.core.Response
 import com.eamar.invoice.src.features.auth.data.model.User
+import com.eamar.invoice.src.features.auth.domain.repository.IsLoggedInResponse
 import com.eamar.invoice.src.features.auth.domain.repository.RemoteUserRepository
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import kotlinx.coroutines.flow.Flow
@@ -78,7 +80,8 @@ class RemoteUserRepositoryImpl @Inject constructor(
    =
 flow {
     try {
-        var result = firebaseAuth.signInWithEmailAndPassword(
+        var result = firebaseAuth.
+        signInWithEmailAndPassword(
             email, password
         ).await()
         if (result.user != null) {
@@ -100,12 +103,18 @@ flow {
            emit(
                Response.Failure(
                    java.lang.Exception(
-                       "No User"
+                       "Wrong Email/Password"
                    )
                )
            )
         }
     } catch (e: Exception) {
+        if (e is FirebaseAuthInvalidUserException){
+            emit(    Response.Failure(java.lang.Exception(
+                "Wrong Email/Password"
+            ))
+            )
+        }
       emit(
           Response.Failure(e)
       )
@@ -170,5 +179,9 @@ flow {
 
     override suspend fun logout() {
        firebaseAuth.signOut()
+    }
+
+    override suspend fun isloggedIn(): Flow<IsLoggedInResponse> = flow {
+        emit(Response.Success(  firebaseAuth.currentUser != null))
     }
 }

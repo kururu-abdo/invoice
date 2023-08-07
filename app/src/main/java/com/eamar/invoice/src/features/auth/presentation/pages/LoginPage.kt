@@ -1,5 +1,6 @@
 package com.eamar.invoice.src.features.auth.presentation.pages
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -7,10 +8,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -24,6 +27,8 @@ import androidx.navigation.compose.rememberNavController
 import com.eamar.invoice.src.features.auth.presentation.AuthViewModel
 import com.eamar.invoice.src.features.auth.presentation.components.AuthButton
 import com.eamar.invoice.src.features.auth.presentation.components.AuthTextField
+import com.eamar.invoice.src.features.auth.presentation.components.EmailField
+import com.eamar.invoice.src.features.auth.presentation.components.PasswordField
 import com.eamar.invoice.src.utils.Constants.mainColor
 import com.eamar.invoice.src.utils.Constants.thirdColor
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,7 +39,17 @@ fun LoginPage(
     ,
     authViewModel: AuthViewModel = hiltViewModel()
 ){
-
+    val context = LocalContext.current
+    LaunchedEffect(Unit){
+        if (authViewModel.errMsg.value.isNotEmpty()){
+            Toast.makeText(
+                context ,
+                authViewModel.errMsg.value ,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+//    isLoading=authViewModel.authState.value.isLoading
+    }
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -62,23 +77,23 @@ fun LoginPage(
             Alignment.CenterHorizontally
         ) {
             Spacer(modifier =Modifier.height(
-                100.dp
+                120.dp
             ))
             Column(
                 modifier = Modifier
                     .height(
-                        150.dp
+                        135.dp
                     ),
 
-                        Arrangement.SpaceBetween
+                        Arrangement.SpaceBetween,
+                Alignment.CenterHorizontally
             ){
                 Image(painter =
-
-                    painterResource(id = com.eamar.invoice.R.drawable.ic_user)
+                painterResource(id = com.eamar.invoice.R.drawable.bill)
                     , contentDescription ="" ,
 
                     modifier = Modifier.height(
-                        120.dp
+                        115.dp
                     )
                     )
 
@@ -86,8 +101,8 @@ fun LoginPage(
                 Text(text = "Invoice App " ,
 
                     style = TextStyle(
-                        fontSize = 20.sp ,
-                        color = mainColor
+                        fontSize = 18.sp ,
+                        color = Color.Black
                     )
                     )
 
@@ -95,8 +110,9 @@ fun LoginPage(
             }
 
             Spacer(modifier =Modifier.height(
-                20.dp
+                15.dp
             ))
+
 Box(
 
     modifier = Modifier
@@ -140,12 +156,14 @@ Box(
 
         )
 
-        AuthTextField(value = "", onValueChange ={
-
+        EmailField(value = authViewModel.email.value,
+            onValueChange ={
+            authViewModel.email.value =it
+            authViewModel.validateEmail()
         } , placeholder ="Email" ,
 
             authViewModel = authViewModel
-            )
+        )
         Spacer(modifier =
 
         Modifier.height(
@@ -153,9 +171,11 @@ Box(
         )
 
         )
-        AuthTextField(value = "", onValueChange ={
-
-        } , placeholder ="Email" , authViewModel = authViewModel
+        PasswordField(value = authViewModel.password.value,
+            onValueChange ={
+                authViewModel.password.value =it
+                authViewModel.validatePassword()
+            } , placeholder ="Password" , authViewModel = authViewModel
         )
         Row(modifier = Modifier.fillMaxWidth()){
             Spacer(modifier = Modifier.weight(1f))
@@ -180,10 +200,27 @@ Box(
         )
 
         )
+        Text(
+            modifier = Modifier.padding(start = 8.dp),
+            text =  authViewModel.errMsg.value
+            ,
+            fontSize = 8.sp,
+            color = Color.Red
+        )
+        AuthButton(text = "Login" ,
 
-        AuthButton(text = "Login") {
+            onClick = {
+                authViewModel.loginUser()
 
-        }
+                if (authViewModel.authState.value.user!= null){
+                    navController.navigate("home")
+                }
+            },
+            authViewModel = authViewModel
+,
+            isLoading = authViewModel.authState.value.isLoading ,
+            isEnabled = authViewModel.isEnabledLoginButton.value
+        )
         Spacer(modifier =
 
         Modifier.height(

@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.eamar.invoice.src.features.auth.presentation.pages.LoginPage
 import com.eamar.invoice.src.features.auth.presentation.pages.SignupPage
+import com.eamar.invoice.src.features.invoice.presentation.pages.Home
 import com.eamar.invoice.ui.theme.InvoiceTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,12 +36,20 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
 
 //                    Greeting("Android")
-                    NavHost(navController = navController, startDestination = "login") {
+                    NavHost(navController = navController, startDestination = "splash") {
                         composable("login") { LoginPage(
                             navController = navController
                         ) }
                         composable("signup") { SignupPage(  navController = navController) }
                         /*...*/
+
+                        composable("splash") { WelcomePage(
+                            navController = navController ,
+                        ) }
+                        composable("home") { Home(
+                            navController = navController ,
+                        ) }
+
                     }
 
 
