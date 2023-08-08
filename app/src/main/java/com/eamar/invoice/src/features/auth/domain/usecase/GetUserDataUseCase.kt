@@ -5,7 +5,7 @@ import com.eamar.invoice.src.features.auth.domain.repository.RemoteUserRepositor
 
 class GetUserDataUseCase (var userRepository: RemoteUserRepository) {
 
-    operator  fun  invoke(id:String)=
-         userRepository.fetchUserProfile(id);
+    operator  fun  invoke()=
+         userRepository.fetchUserProfile();
 
 }

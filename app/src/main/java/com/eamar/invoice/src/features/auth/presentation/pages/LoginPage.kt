@@ -40,13 +40,16 @@ fun LoginPage(
     authViewModel: AuthViewModel = hiltViewModel()
 ){
     val context = LocalContext.current
-    LaunchedEffect(Unit){
+    LaunchedEffect(authViewModel.authState){
         if (authViewModel.errMsg.value.isNotEmpty()){
             Toast.makeText(
                 context ,
                 authViewModel.errMsg.value ,
                 Toast.LENGTH_SHORT
             ).show()
+        }
+        if (authViewModel.authState.value.user!= null){
+            navController.navigate("home")
         }
 //    isLoading=authViewModel.authState.value.isLoading
     }
@@ -212,9 +215,8 @@ Box(
             onClick = {
                 authViewModel.loginUser()
 
-                if (authViewModel.authState.value.user!= null){
-                    navController.navigate("home")
-                }
+
+
             },
             authViewModel = authViewModel
 ,

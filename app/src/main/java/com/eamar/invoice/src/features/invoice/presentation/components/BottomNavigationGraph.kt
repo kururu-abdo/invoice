@@ -2,6 +2,7 @@ package com.eamar.invoice.src.features.invoice.presentation.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
@@ -11,7 +12,8 @@ import androidx.navigation.compose.composable
 @Composable
 fun BottomNavigationGraph(
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController ,
+    mainNavController: NavController
 ) {
 
     NavHost(
@@ -20,14 +22,19 @@ fun BottomNavigationGraph(
         startDestination = NavRoute.home.path
     ) {
 
-        addinvoicesScreen(navController, this)
-        addFilesPage(navController, this)
-        addProfileScreen(navController, this)
+        addinvoicesScreen(navController, this,
+
+            mainNavController
+
+            )
+        addFilesPage(navController, this ,mainNavController)
+        addProfileScreen(navController, this,mainNavController)
     }
 }
 private fun addinvoicesScreen(
     navController: NavHostController,
-    navGraphBuilder: NavGraphBuilder
+    navGraphBuilder: NavGraphBuilder ,
+    mainNavController: NavController
 ) {
     navGraphBuilder.composable(route = NavRoute.home.path) {
         Invoices(
@@ -35,12 +42,16 @@ private fun addinvoicesScreen(
 //            navigateToHome = {
 //                navController.navigate(NavRoute.Home.path)
 //            }
+                    , mainNavController = mainNavController
         )
     }
 }
 private fun addProfileScreen(
     navController: NavHostController,
     navGraphBuilder: NavGraphBuilder
+
+    ,
+    mainNavController: NavController
 ) {
     navGraphBuilder.composable(route = NavRoute.Profile.path) {
         ProfilePage(
@@ -48,19 +59,29 @@ private fun addProfileScreen(
 //            navigateToHome = {
 //                navController.navigate(NavRoute.Home.path)
 //            }
+
+        ,
+            mainNavController=
+            mainNavController
         )
     }
 }
 private fun addFilesPage(
     navController: NavHostController,
-    navGraphBuilder: NavGraphBuilder
+    navGraphBuilder: NavGraphBuilder ,
+
+    mainNavController: NavController
 ) {
-    navGraphBuilder.composable(route = NavRoute.files.path) {
+    navGraphBuilder.composable(route =
+    NavRoute.files.path) {
         FilesPage(
             navController = navController
 //            navigateToHome = {
 //                navController.navigate(NavRoute.Home.path)
 //            }
+
+        ,
+            mainNavController = mainNavController
         )
     }
 }

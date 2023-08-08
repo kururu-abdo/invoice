@@ -3,6 +3,7 @@ package com.eamar.invoice.src.features.auth.data.repository
 import com.eamar.invoice.R
 import com.eamar.invoice.src.core.Response
 import com.eamar.invoice.src.features.auth.data.model.User
+import com.eamar.invoice.src.features.auth.domain.repository.GetUserRespone
 import com.eamar.invoice.src.features.auth.domain.repository.IsLoggedInResponse
 import com.eamar.invoice.src.features.auth.domain.repository.RemoteUserRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -123,32 +124,36 @@ flow {
 
 
 
-     override   fun fetchUserProfile(id: String): Flow<User> = callbackFlow {
+     override   fun fetchUserProfile(): Flow<GetUserRespone> = flow {
        try {
            var currentUser = firebaseAuth.currentUser!!
 
            if (currentUser!=null){
 
-               Response.Success<User>(
-                   User(
-                       id = currentUser!!.uid,
-                       userName = currentUser.displayName!!,
-                       email = currentUser.email!!,
-                       userIcon = R.drawable.ic_user,
-                       password = ""
-                   )
-               )
+              emit(
+                  Response.Success<User>(
+                      User(
+                          id = currentUser!!.uid,
+                          userName = currentUser.displayName!!,
+                          email = currentUser.email!!,
+                          userIcon = R.drawable.ic_user,
+                          password = ""
+                      )
+                  )
+              )
            }else {
-               Response.Failure(
-                   java.lang.Exception(
-                       "No User"
-                   )
-               )
+              emit(
+                  Response.Failure(
+                      java.lang.Exception(
+                          "No User"
+                      )
+                  )
+              )
            }
 
        }catch (e:Exception){
 
-           Response.Failure(e)
+          emit( Response.Failure(e))
 
        }
     }

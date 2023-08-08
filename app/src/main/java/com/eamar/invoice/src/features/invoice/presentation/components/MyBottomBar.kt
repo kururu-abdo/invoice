@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import javax.annotation.Untainted
@@ -16,7 +17,7 @@ import javax.annotation.Untainted
 @Composable
 fun MyBottomBar(
 //    onPageChange: (Int)->Unit ={}
-    navController: NavController
+    navController: NavController ,
 ) {
 
 //    // items list
@@ -87,7 +88,7 @@ fun MyBottomBar(
         BottomNavigationItem(
             icon = {
                 Icon(
-                    imageVector = Icons.Default.Home,
+                  painter = painterResource(id = com.eamar.invoice.R.drawable.ic_pdf),
                     contentDescription = NavRoute.files.path
                 )
             },

@@ -13,6 +13,7 @@ import com.eamar.invoice.src.features.auth.domain.repository.LoginUserRespone
 import com.eamar.invoice.src.features.auth.domain.repository.SignUserRespone
 import com.eamar.invoice.src.features.auth.domain.usecase.AuthUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -76,6 +77,8 @@ class AuthViewModel
     init {
         errMsg.value=""
 checkIfLoggedIn()
+
+
     }
     fun checkIfLoggedIn() =viewModelScope.launch {
 
@@ -255,11 +258,53 @@ if (signUserResponse is Response.Success<User>){
         shouldEnabledRegisterButton()
     }
 
-
-
-
+fun logout() = viewModelScope.launch {
+    authState.value=   authState.value.copy(
+        isLoading = true
+    )
+    delay(3000L)
+    useCases.logoutUser()
 
 }
+   fun fetchProfile() = viewModelScope.launch {
+
+       authState.value = authState.value.copy(
+           isLoading = true
+       )
+       var newUser = User(
+           id = "", userName =
+           userName.value, email = email.value, password = password.value,
+           userIcon = R.drawable.ic_user
+       )
+
+
+       authState.value = authState.value.copy(
+           isLoading = true
+       )
+       useCases.fetchUser().collect {
+           signUserResponse = it
+           if (signUserResponse is Response.Success<User>) {
+               authState.value = authState.value.copy(
+                   user =
+                   (signUserResponse as Response.Success<User>)
+                       .data,
+                   isLoading = false
+               )
+           } else {
+               errMsg.value = (signUserResponse as Response.Failure).e.toString()
+
+               authState.value = authState.value.copy(
+                   user =
+                   null,
+                   isLoading = false
+               )
+           }
+
+
+       }
+   }}
+
+
 
 data class AuthState(
     var user: User?=null ,

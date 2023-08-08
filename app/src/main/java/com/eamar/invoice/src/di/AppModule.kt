@@ -39,6 +39,7 @@ object AppModule {
         deleteUser = DeleteUserUseCase(repo) ,
         updateUser = UpdateUserDataUseCase(repo) ,
         logoutUser = SignOutUseCase(repo) ,
-        isLggedInUseCase = CheckIfLoggedInUseCase(repo)
+        isLggedInUseCase = CheckIfLoggedInUseCase(repo),
+        fetchUser = GetUserDataUseCase(repo)
     )
 }

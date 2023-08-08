@@ -7,7 +7,10 @@ import androidx.navigation.NavController
 
 
 @Composable
-fun Invoices(navController: NavController) {
+fun Invoices(navController: NavController
+,
+             mainNavController:NavController
+) {
     Box() {
         Text(text = "invoices")
     }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.AccountBox
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -69,7 +70,17 @@ fun Home(
 
 
             title = {Text("Invoice App")},
-            backgroundColor = mainColor)  },
+
+
+            actions = {
+                IconButton(onClick = { /* doSomething() */ }) {
+                    Icon(Icons.Filled.Add ,
+                    contentDescription = null
+
+                        )
+                }
+            },
+                backgroundColor = mainColor)  },
 
 //        drawerContent = { Text(text = "drawerContent") },
 //        content = {
@@ -92,7 +103,9 @@ fun Home(
         BottomNavigationGraph(
             modifier = Modifier.padding(
                 bottom = contentPadding.calculateBottomPadding()),
-            navController = bottomNavController
+
+            navController = bottomNavController,
+            mainNavController = navController
         )
     }
 }
