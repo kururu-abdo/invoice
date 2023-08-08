@@ -10,15 +10,16 @@ import com.eamar.invoice.src.utils.Constants.secondaryColor
 import com.eamar.invoice.src.utils.Constants.thirdColor
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = mainColor,
+    primaryVariant = thirdColor,
+    secondary = secondaryColor
 )
 
 private val LightColorPalette = lightColors(
     primary = mainColor,
     primaryVariant = thirdColor,
-    secondary = secondaryColor
+    secondary = secondaryColor ,
+
 
     /* Other default colors to override
     background = Color.White,
