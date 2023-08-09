@@ -67,7 +67,7 @@ fun FileContainer(fileData:FileData){
    Surface(elevation = 5.dp  ) {
        Box(
            modifier = Modifier
-               .padding(5.dp)
+               .padding(bottom=5.dp)
                .fillMaxWidth()
                .height(60.dp)
                .background(
@@ -79,8 +79,9 @@ fun FileContainer(fileData:FileData){
                )
                .padding(5.dp)
        ) {
-         Row  (     
-             horizontalArrangement = Arrangement.SpaceEvenly
+         Row  (
+             modifier=Modifier.fillMaxWidth() ,
+             horizontalArrangement = Arrangement.SpaceBetween
                  ) {
              
              

@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -32,6 +33,7 @@ import com.eamar.invoice.src.features.auth.presentation.components.PasswordField
 import com.eamar.invoice.src.utils.Constants.mainColor
 import com.eamar.invoice.src.utils.Constants.thirdColor
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginPage(
@@ -40,6 +42,7 @@ fun LoginPage(
     authViewModel: AuthViewModel = hiltViewModel()
 ){
     val context = LocalContext.current
+    var scope = rememberCoroutineScope()
     LaunchedEffect(authViewModel.authState){
         if (authViewModel.errMsg.value.isNotEmpty()){
             Toast.makeText(
@@ -213,7 +216,15 @@ Box(
         AuthButton(text = "Login" ,
 
             onClick = {
-                authViewModel.loginUser()
+                scope.launch {
+                    authViewModel.loginUser()
+
+
+                    if (authViewModel.authState.value.user!= null){
+                        navController.navigate("home")
+                    }
+                }
+
 
 
 
