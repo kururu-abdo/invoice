@@ -11,6 +11,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.eamar.invoice.src.features.auth.presentation.AuthViewModel
 import com.eamar.invoice.src.utils.Constants.mainColor
+import kotlinx.coroutines.launch
 
 @Composable
 fun ProfilePage(navController: NavController ,
@@ -36,10 +38,12 @@ fun ProfilePage(navController: NavController ,
                 ,
                 mainNavController:NavController
                 ){
+    var scope = rememberCoroutineScope()
+
     authViewModel.  fetchProfile()
-    LaunchedEffect(Unit ){
-        authViewModel.  fetchProfile()
-    }
+//    LaunchedEffect(Unit ){
+//        authViewModel.  fetchProfile()
+//    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -50,8 +54,10 @@ fun ProfilePage(navController: NavController ,
         ,
         Alignment.Center
     ) {
-      if (authViewModel.authState.value.isLoading)
+      if (authViewModel.authState.value.isLoading && authViewModel.isLoggedIn.value)
           CircularProgressIndicator()
+       else if( !authViewModel.isLoggedIn.value)
+           Text(text = "You are logged out")
         else
             Column(   modifier = Modifier.fillMaxSize(),
 //Arrangement.SpaceEvenly
@@ -119,7 +125,7 @@ Alignment.Start
                           Text(
 
 
-                              text = "${authViewModel.authState.value.user!!.userName}"
+                              text = authViewModel.authState.value.user!!.userName.toString()
                               ,
                               style = TextStyle(
                                   fontSize = 20.sp  ,
@@ -131,7 +137,7 @@ Alignment.Start
                           Text(
 
 
-                              text = authViewModel.authState.value.user!!.email
+                              text = authViewModel.authState.value.user!!.email.toString()
                               ,
                               style = TextStyle(
                                   fontSize = 15.sp  ,
@@ -209,14 +215,18 @@ Column(
 
                              )
                          .clickable {
+                             scope.launch {
+                                 authViewModel
+                                     .logout(
 
 
-                             authViewModel.logout(
+                                     )
+                                     .join()
 
+                                 mainNavController.navigate("splash")
 
-                             )
+                             }
 
-                             mainNavController.navigate("splash")
 
                          },
 

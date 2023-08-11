@@ -84,7 +84,7 @@ checkIfLoggedIn()
 
     useCases.isLggedInUseCase().collect{
         if (it is Response.Success) {
-            isLoggedIn.value = (it as Response.Success<Boolean>).data
+            isLoggedIn.value = it.data!!
         }
         else {
             isLoggedIn.value = false
@@ -264,7 +264,11 @@ fun logout() = viewModelScope.launch {
     )
     delay(3000L)
     useCases.logoutUser()
-
+    checkIfLoggedIn()
+    authState.value=   authState.value.copy(
+        isLoading = false ,
+        user = null
+    )
 }
    fun fetchProfile() = viewModelScope.launch {
 

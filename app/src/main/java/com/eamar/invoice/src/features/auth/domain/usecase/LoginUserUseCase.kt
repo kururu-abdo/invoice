@@ -5,5 +5,6 @@ import com.eamar.invoice.src.features.auth.domain.repository.RemoteUserRepositor
 class LoginUserUseCase(var userRep:RemoteUserRepository) {
 
     suspend operator fun  invoke(phone:String ,password:String)=
+
         userRep.loginUser(phone ,password)
 }

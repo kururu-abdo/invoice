@@ -7,9 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -42,6 +40,8 @@ fun LoginPage(
     authViewModel: AuthViewModel = hiltViewModel()
 ){
     val context = LocalContext.current
+
+
     var scope = rememberCoroutineScope()
     LaunchedEffect(authViewModel.authState){
         if (authViewModel.errMsg.value.isNotEmpty()){
@@ -217,7 +217,7 @@ Box(
 
             onClick = {
                 scope.launch {
-                    authViewModel.loginUser()
+                    authViewModel.loginUser().join()
 
 
                     if (authViewModel.authState.value.user!= null){

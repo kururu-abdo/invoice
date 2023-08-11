@@ -4,11 +4,16 @@ import com.eamar.invoice.src.features.auth.data.repository.RemoteUserRepositoryI
 import com.eamar.invoice.src.features.auth.domain.repository.IsLoggedInResponse
 import com.eamar.invoice.src.features.auth.domain.repository.RemoteUserRepository
 import com.eamar.invoice.src.features.auth.domain.usecase.*
+import com.eamar.invoice.src.features.invoice.data.repository.RemoteInvoiceRepositoryImpl
+import com.eamar.invoice.src.features.invoice.domain.repository.RemoteInvoiceRepository
+import com.eamar.invoice.src.features.invoice.domain.usecases.AddNewInvoiceUseCase
+import com.eamar.invoice.src.features.invoice.domain.usecases.InvoiceUseCases
 import com.eamar.invoice.src.utils.Constants
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.Module
@@ -26,6 +31,8 @@ object AppModule {
     @Provides
     fun provideFirebaseAuth() =  Firebase.auth
     @Provides
+    fun provideFireStore() =  Firebase.firestore
+    @Provides
     fun provideUserRepository(
         firebaseAuth: FirebaseAuth
     ): RemoteUserRepository = RemoteUserRepositoryImpl(firebaseAuth)
@@ -41,5 +48,20 @@ object AppModule {
         logoutUser = SignOutUseCase(repo) ,
         isLggedInUseCase = CheckIfLoggedInUseCase(repo),
         fetchUser = GetUserDataUseCase(repo)
+    )
+
+
+    @Provides
+    fun provideInvoiceRepository(
+        firestore: FirebaseFirestore ,
+        auth: FirebaseAuth
+    ): RemoteInvoiceRepository =
+        RemoteInvoiceRepositoryImpl(firestore , auth)
+    @Provides
+    fun provideInvoiceUseCases(
+        repo: RemoteInvoiceRepository
+    ) = InvoiceUseCases(
+        addNewInvoiceUseCase = AddNewInvoiceUseCase(repo),
+
     )
 }

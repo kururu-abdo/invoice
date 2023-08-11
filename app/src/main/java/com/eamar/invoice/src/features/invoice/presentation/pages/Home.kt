@@ -73,7 +73,10 @@ fun Home(
 
 
             actions = {
-                IconButton(onClick = { /* doSomething() */ }) {
+                IconButton(onClick = {
+
+                    navController.navigate("add-invoice")
+                }) {
                     Icon(Icons.Filled.Add ,
                     contentDescription = null
 

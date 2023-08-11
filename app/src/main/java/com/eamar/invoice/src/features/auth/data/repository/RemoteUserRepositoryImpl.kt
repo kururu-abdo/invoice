@@ -126,9 +126,9 @@ flow {
 
      override   fun fetchUserProfile(): Flow<GetUserRespone> = flow {
        try {
-           var currentUser = firebaseAuth.currentUser!!
+           var currentUser = firebaseAuth.currentUser
 
-           if (currentUser!=null){
+           if (currentUser!= null){
 
               emit(
                   Response.Success<User>(
@@ -143,10 +143,12 @@ flow {
               )
            }else {
               emit(
-                  Response.Failure(
-                      java.lang.Exception(
-                          "No User"
-                      )
+
+                  Response.Success<User>(
+                      null
+//                      java.lang.Exception(
+//                          "No User"
+//                      )
                   )
               )
            }
@@ -187,6 +189,8 @@ flow {
     }
 
     override suspend fun isloggedIn(): Flow<IsLoggedInResponse> = flow {
-        emit(Response.Success(  firebaseAuth.currentUser != null))
+        emit(Response.Success<Boolean>(
+            firebaseAuth.currentUser != null
+        ))
     }
 }

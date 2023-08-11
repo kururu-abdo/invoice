@@ -4,7 +4,7 @@ data class Invoice (
 
 
     var id: String ,
-
+    var title:String ,
     var userId :String,
     var createdAt: Int ,
     var updatedAt:Int ,

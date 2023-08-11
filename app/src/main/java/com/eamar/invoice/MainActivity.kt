@@ -17,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import com.eamar.invoice.src.features.auth.presentation.pages.LoginPage
 import com.eamar.invoice.src.features.auth.presentation.pages.SignupPage
 import com.eamar.invoice.src.features.invoice.presentation.pages.Home
+import com.eamar.invoice.src.features.invoice.presentation.pages.NewInvoice
 import com.eamar.invoice.ui.theme.InvoiceTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -49,7 +50,9 @@ class MainActivity : ComponentActivity() {
                         composable("home") { Home(
                             navController = navController ,
                         ) }
-
+                        composable("add-invoice") { NewInvoice (
+                            navController = navController ,
+                        ) }
                     }
 
 
